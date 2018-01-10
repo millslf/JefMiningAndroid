@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#201f1f"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_containerGdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/spreadHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Spread values"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textStyle="bold|italic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BC GBP Value"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/BCGBP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="7"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="textPersonName"
+                        android:textAlignment="viewStart" />
+
+                    <ImageView
+                        android:id="@+id/BCGBPTrendImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BC ZAR Value"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/BCZARONGBP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="7"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="textPersonName" />
+
+                    <ImageView
+                        android:id="@+id/BCZARTrendImageGBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="GBP to ZAR\t  "
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/GBPtoZAR"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="6"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="textPersonName" />
+
+                    <EditText
+                        android:id="@+id/spreadgbp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="7"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:textColor="@android:color/holo_blue_dark" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/spreadAlert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:text="Spread alert config"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textStyle="bold|italic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/spreadHighGBP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="5"
+                        android:hint="Spread high value"
+                        android:inputType="number|numberSigned|numberDecimal"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <CheckBox
+                        android:id="@+id/sound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sound" />
+
+                    <CheckBox
+                        android:id="@+id/buzz"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buzz" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/spreadInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:text="Profit input"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textStyle="bold|italic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Buy in GBP"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/buyGBP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="4"
+                        android:focusable="true"
+                        android:inputType="numberDecimal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Actual Cost Rand"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/actualCostRandGbp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="6"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Bitcoins bought\t\t"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/bitCoinsBoughtGbp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:enabled="true"
+                        android:focusable="false"
+                        android:inputType="textPersonName"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sell at current rate\t\t"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/sellAtCurrentRateGbp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="textPersonName"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="PROFIT\t\t"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/profitGbp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/resyncGbp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RESYNC" />
+        </LinearLayout>
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

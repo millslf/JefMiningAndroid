@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JEFMINING</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">%s</string>
+</resources>
