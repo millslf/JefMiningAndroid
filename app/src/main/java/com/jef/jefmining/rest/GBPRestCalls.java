@@ -124,13 +124,10 @@ public class GBPRestCalls extends BaseRestCalls {
 
         if (allSyncDone) {
 
-            Double cost = Double.parseDouble(bczar.getLastTrade()) * 0.0012;
-            Double fnbExhange = Double.parseDouble(gbpToZAR.getGbpZar()) * 1.035;
-
             // Calculate spread
-            Double spread =
-                    (Double.parseDouble(bczar.getLastTrade()) - (Double.parseDouble(bcGbp.getLprice()) * fnbExhange) - cost)
-                            / (Double.parseDouble(bczar.getLastTrade()) - cost) * 100;
+            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcGbp.getLprice()),
+                    Double.parseDouble(gbpToZAR.getGbpZar()));
+
             CheckBox buzzCheckBox = context.findViewById(R.id.buzz);
 
             final double spreadAlert = context.getSharedPreferences(null, Context.MODE_PRIVATE).getFloat("SPREADGBP", 10);
@@ -199,7 +196,7 @@ public class GBPRestCalls extends BaseRestCalls {
                     editor.putFloat("BUYGBP", new Float(buyGBPOEdit.getText().toString())).commit();
 
                     EditText actualCostRand = context.findViewById(R.id.actualCostRandGbp);
-                    Double actualCostValue = new Double(new Double(fnbExhange) * (new Double(buyGBPOEdit.getText().toString()) * 1.035));
+                    Double actualCostValue = new Double(getFnbExchange(Double.parseDouble(gbpToZAR.getGbpZar())) * (new Double(buyGBPOEdit.getText().toString()) * 1.035));
                     actualCostRand.setText(String.format("R%.2f", actualCostValue));
 
                     EditText bitCoinsBought = context.findViewById(R.id.bitCoinsBoughtGbp);

@@ -125,13 +125,9 @@ public class RUBRestCalls extends BaseRestCalls {
 
         if (allSyncDone) {
 
-            Double cost = Double.parseDouble(bczar.getLastTrade()) * 0.0012;
-            Double fnbExhange = Double.parseDouble(rubToZAR.getRubZar()) * 1.035;
-
             // Calculate spread
-            Double spread =
-                    (Double.parseDouble(bczar.getLastTrade()) - (Double.parseDouble(bcRub.getLprice()) * fnbExhange) - cost)
-                            / (Double.parseDouble(bczar.getLastTrade()) - cost) * 100;
+            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcRub.getLprice()),
+                    Double.parseDouble(rubToZAR.getRubZar()));
 
             CheckBox buzzCheckBox = context.findViewById(R.id.buzz);
             final double spreadAlert = context.getSharedPreferences(null, Context.MODE_PRIVATE).getFloat("SPREADRUB", 10);
@@ -200,7 +196,7 @@ public class RUBRestCalls extends BaseRestCalls {
                     editor.putFloat("BUYRUB", new Float(buyRUBOEdit.getText().toString())).commit();
 
                     EditText actualCostRand = context.findViewById(R.id.actualCostRandRub);
-                    Double actualCostValue = new Double(new Double(fnbExhange) * (new Double(buyRUBOEdit.getText().toString()) * 1.035));
+                    Double actualCostValue = new Double(getFnbExchange(Double.parseDouble(rubToZAR.getRubZar())) * (new Double(buyRUBOEdit.getText().toString()) * 1.035));
                     actualCostRand.setText(String.format("R%.2f", actualCostValue));
 
                     EditText bitCoinsBought = context.findViewById(R.id.bitCoinsBoughtRub);

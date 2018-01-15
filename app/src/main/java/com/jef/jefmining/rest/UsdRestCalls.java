@@ -60,11 +60,21 @@ public class UsdRestCalls extends BaseRestCalls {
 
             Set<Callable<FutureResult>> callables = new HashSet<>();
 
-            callables.add(() -> {return new FutureResult(LunoHelper.isTrendUp(restClient, context), "lunoTrendUp");});
-            callables.add(() -> {return new FutureResult(CexHelper.isTrendUp(restClient, context, "USD"), "bcUsdTrendUp");});
-            callables.add(() -> {return new FutureResult(CexHelper.getBCToCurrency(restClient, context, "USD"), "bcusd");});
-            callables.add(() -> {return new FutureResult(LunoHelper.getLastLunoTrade(restClient, context), "bczar");});
-            callables.add(() -> {return new FutureResult(CurrencyHelper.getUsdToZar(restClient, context), "usDtoZAR");});
+            callables.add(() -> {
+                return new FutureResult(LunoHelper.isTrendUp(restClient, context), "lunoTrendUp");
+            });
+            callables.add(() -> {
+                return new FutureResult(CexHelper.isTrendUp(restClient, context, "USD"), "bcUsdTrendUp");
+            });
+            callables.add(() -> {
+                return new FutureResult(CexHelper.getBCToCurrency(restClient, context, "USD"), "bcusd");
+            });
+            callables.add(() -> {
+                return new FutureResult(LunoHelper.getLastLunoTrade(restClient, context), "bczar");
+            });
+            callables.add(() -> {
+                return new FutureResult(CurrencyHelper.getUsdToZar(restClient, context), "usDtoZAR");
+            });
 
             List<Future<FutureResult>> futures = executorService.invokeAll(callables);
             for (Future<FutureResult> future : futures) {
@@ -108,13 +118,9 @@ public class UsdRestCalls extends BaseRestCalls {
     public void onResult(final Void value) {
         if (allSyncDone) {
 
-            Double cost = Double.parseDouble(bczar.getLastTrade()) * 0.0012;
-            Double fnbExhange = Double.parseDouble(usDtoZAR.getUsdZar()) * 1.035;
-
             // Calculate spread
-            Double spread =
-                    (Double.parseDouble(bczar.getLastTrade()) - (Double.parseDouble(bcusd.getLprice()) * fnbExhange) - cost)
-                            / (Double.parseDouble(bczar.getLastTrade()) - cost) * 100;
+            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcusd.getLprice()),
+                    Double.parseDouble(usDtoZAR.getUsdZar()));
 
             CheckBox buzzCheckBox = context.findViewById(R.id.buzz);
             final double spreadAlert = context.getSharedPreferences(null, Context.MODE_PRIVATE).getFloat("SPREADUSD", 10);
@@ -184,7 +190,7 @@ public class UsdRestCalls extends BaseRestCalls {
                     editor.putFloat("BUYUSD", new Float(buyUSDEdit.getText().toString())).commit();
 
                     EditText actualCostRand = context.findViewById(R.id.actualCostRand);
-                    Double actualCostValue = new Double(new Double(fnbExhange) * (new Double(buyUSDEdit.getText().toString()) * 1.035));
+                    Double actualCostValue = new Double(getFnbExchange(Double.parseDouble(usDtoZAR.getUsdZar())) * (new Double(buyUSDEdit.getText().toString()) * 1.035));
                     actualCostRand.setText(String.format("R%.2f", actualCostValue));
 
                     EditText bitCoinsBought = context.findViewById(R.id.bitCoinsBought);

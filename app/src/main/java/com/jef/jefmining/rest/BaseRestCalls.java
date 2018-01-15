@@ -42,4 +42,16 @@ public abstract class BaseRestCalls extends SyncTask<Void> {
             this.name = name;
         }
     }
+
+    protected double getFnbExchange(Double amt) {
+        return amt * 1.035;
+    }
+
+    protected double getCost(Double amt) {
+        return amt * 0.0012;
+    }
+
+    protected double getSpread(Double randVal, Double foreignCurrency, double exchangeRate) {
+        return (randVal - (foreignCurrency * getFnbExchange(exchangeRate)) - getCost(randVal)) / (randVal - getCost(randVal)) * 100 - 3.65;
+    }
 }
