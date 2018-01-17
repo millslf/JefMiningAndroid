@@ -93,7 +93,6 @@ public class FragmentGBP extends BaseFragment {
 
         SwipeRefreshLayout swipeLayout = view.findViewById(R.id.swipe_containerGbp);
         swipeLayout.setOnRefreshListener(() ->
-
         {
             if (gdpRestCalls != null) {
                 gdpRestCalls.cancel(true);

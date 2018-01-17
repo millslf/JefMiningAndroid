@@ -23,9 +23,6 @@ public class FragmentRUB extends BaseFragment {
 
     protected RUBRestCalls rubRestCalls;
 
-    public FragmentRUB() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +84,7 @@ public class FragmentRUB extends BaseFragment {
             rubRestCalls.execute();
 
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-           // handler.postDelayed(restRunnable, 1000 * 60 * 5);
+            // handler.postDelayed(restRunnable, 1000 * 60 * 5);
 
         };
         handler.postDelayed(restRunnable, MainActivity.syncTime);

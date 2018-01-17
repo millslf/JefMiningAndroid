@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.jef.jefmining.fragments.FragmentCryptoSpreadPair;
 import com.jef.jefmining.fragments.FragmentEURO;
 import com.jef.jefmining.fragments.FragmentGBP;
 import com.jef.jefmining.fragments.FragmentRUB;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new FragmentEURO(), "EURO");
         adapter.addFragment(new FragmentGBP(), "GBP");
         adapter.addFragment(new FragmentRUB(), "RUB");
+        adapter.addFragment(new FragmentCryptoSpreadPair(), "CRYPTO SPREAD");
 
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = findViewById(R.id.tabs);

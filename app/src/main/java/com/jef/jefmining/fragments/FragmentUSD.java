@@ -28,10 +28,6 @@ public class FragmentUSD extends BaseFragment {
 
     protected USDRestCalls usdRest;
 
-    public FragmentUSD() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
