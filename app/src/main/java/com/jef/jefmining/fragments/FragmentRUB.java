@@ -56,7 +56,7 @@ public class FragmentRUB extends BaseFragment {
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
 
-        CheckBox buzz = view.findViewById(R.id.buzz);
+        CheckBox buzz = view.findViewById(R.id.buzzRub);
         final boolean buzzChecked = getActivity().getSharedPreferences(null, Context.MODE_PRIVATE).getBoolean("BUZZRUB", true);
         buzz.setChecked(buzzChecked);
         buzz.setOnCheckedChangeListener((buttonView, isChecked) -> {

@@ -114,7 +114,7 @@
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/spreadgbp"
+                        android:id="@+id/spreadGbp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="7"
@@ -163,7 +163,7 @@
                         android:text="Sound" />
 
                     <CheckBox
-                        android:id="@+id/buzz"
+                        android:id="@+id/buzzGbp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Buzz" />

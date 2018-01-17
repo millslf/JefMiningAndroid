@@ -163,7 +163,7 @@
                         android:text="Sound" />
 
                     <CheckBox
-                        android:id="@+id/buzz"
+                        android:id="@+id/buzzEURO"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Buzz" />

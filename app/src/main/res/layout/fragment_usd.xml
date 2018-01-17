@@ -75,7 +75,7 @@
                         android:textStyle="bold|italic" />
 
                     <EditText
-                        android:id="@+id/BCZAR"
+                        android:id="@+id/BCZARONUSD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="7"
@@ -114,7 +114,7 @@
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/spread"
+                        android:id="@+id/spreadUsd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="7"
@@ -163,7 +163,7 @@
                         android:text="Sound" />
 
                     <CheckBox
-                        android:id="@+id/buzz"
+                        android:id="@+id/buzzUsd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Buzz" />
@@ -216,7 +216,7 @@
                         android:textStyle="bold|italic" />
 
                     <EditText
-                        android:id="@+id/actualCostRand"
+                        android:id="@+id/actualCostRandUsd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -255,7 +255,7 @@
                         android:textStyle="bold|italic" />
 
                     <EditText
-                        android:id="@+id/bitCoinsBought"
+                        android:id="@+id/bitCoinsBoughtUsd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -278,7 +278,7 @@
                         android:textStyle="bold|italic" />
 
                     <EditText
-                        android:id="@+id/sellAtCurrentRate"
+                        android:id="@+id/sellAtCurrentRateUsd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -301,7 +301,7 @@
                         android:textStyle="bold|italic" />
 
                     <EditText
-                        android:id="@+id/profit"
+                        android:id="@+id/profitUsd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

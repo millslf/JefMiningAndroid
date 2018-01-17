@@ -56,7 +56,7 @@ public class FragmentGBP extends BaseFragment {
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
 
-        CheckBox buzz = view.findViewById(R.id.buzz);
+        CheckBox buzz = view.findViewById(R.id.buzzGbp);
         final boolean buzzChecked = getActivity().getSharedPreferences(null, Context.MODE_PRIVATE).getBoolean("BUZZGBP", true);
         buzz.setChecked(buzzChecked);
         buzz.setOnCheckedChangeListener((buttonView, isChecked) -> {
