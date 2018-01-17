@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import com.jef.jefmining.MainActivity;
 import com.jef.jefmining.R;
-import com.jef.jefmining.rest.UsdRestCalls;
+import com.jef.jefmining.rest.USDRestCalls;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +26,7 @@ import java.util.Date;
 
 public class FragmentUSD extends BaseFragment {
 
-    protected UsdRestCalls usdRest;
+    protected USDRestCalls usdRest;
 
     public FragmentUSD() {
         // Required empty public constructor
@@ -56,7 +56,7 @@ public class FragmentUSD extends BaseFragment {
                 usdRest.cancel(true);
             }
 
-            usdRest = new UsdRestCalls(getActivity(), true);
+            usdRest = new USDRestCalls(getActivity(), true);
             usdRest.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
@@ -87,7 +87,7 @@ public class FragmentUSD extends BaseFragment {
             if (usdRest != null) {
                 usdRest.cancel(true);
             }
-            usdRest = new UsdRestCalls(getActivity(), false);
+            usdRest = new USDRestCalls(getActivity(), false);
             usdRest.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
             //handler.postDelayed(restRunnable, MainActivity.syncTime);
@@ -100,7 +100,7 @@ public class FragmentUSD extends BaseFragment {
                 usdRest.cancel(true);
             }
 
-            usdRest = new UsdRestCalls(getActivity(), true);
+            usdRest = new USDRestCalls(getActivity(), true);
             usdRest.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
 

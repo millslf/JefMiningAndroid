@@ -91,7 +91,7 @@ public class FragmentGBP extends BaseFragment {
         };
         handler.postDelayed(restRunnable, MainActivity.syncTime);
 
-        SwipeRefreshLayout swipeLayout = view.findViewById(R.id.swipe_containerGdp);
+        SwipeRefreshLayout swipeLayout = view.findViewById(R.id.swipe_containerGbp);
         swipeLayout.setOnRefreshListener(() ->
 
         {

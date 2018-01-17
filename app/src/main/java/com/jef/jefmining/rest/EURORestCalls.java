@@ -9,115 +9,37 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jef.jefmining.R;
-import com.jef.jefmining.cex.CexHelper;
-import com.jef.jefmining.currency.BCTOCURRENCY;
-import com.jef.jefmining.currency.BCZAR;
-import com.jef.jefmining.currency.CurrencyHelper;
 import com.jef.jefmining.currency.EURtoZAR;
 import com.jef.jefmining.fragments.FragmentEURO;
-import com.jef.jefmining.luno.LunoHelper;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by ettienne on 2017/12/18.
  */
 
 public class EURORestCalls extends BaseRestCalls {
-    private BCTOCURRENCY bceur;
-    private BCZAR bczar;
-    private EURtoZAR eurtoZAR;
+
+    private EURtoZAR eurToZAR;
     private boolean allSyncDone = true;
-    private Boolean lunoTrendUp;
-    private boolean bcEurTrendUp;
 
     public EURORestCalls(Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);
+        currency = "EUR";
+        swipeLayout = context.findViewById(R.id.swipe_containerEuro);
+        currencyClass = EURtoZAR.class;
     }
 
     @Override
-    public Void doWork(Object... objects) throws Exception {
-        RestClient<String> restClient = new RestClient<>();
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
-        try {
-
-            Set<Callable<FutureResult>> callables = new HashSet<>();
-
-            callables.add(() -> {
-                return new FutureResult(LunoHelper.isTrendUp(restClient, context), "lunoTrendUp");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CexHelper.isTrendUp(restClient, context, "EUR"), "bcEurTrendUp");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CexHelper.getBCToCurrency(restClient, context, "EUR"), "bceur");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(LunoHelper.getLastLunoTrade(restClient, context), "bczar");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CurrencyHelper.getEurToZar(restClient, context), "eurtoZAR");
-            });
-
-            List<Future<FutureResult>> futures = executorService.invokeAll(callables);
-
-            for (Future<FutureResult> future : futures) {
-                if (future.get().getName().equals("lunoTrendUp")) {
-                    lunoTrendUp = (Boolean) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bcEurTrendUp")) {
-                    bcEurTrendUp = (Boolean) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bceur")) {
-                    bceur = (BCTOCURRENCY) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bczar")) {
-                    bczar = (BCZAR) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("eurtoZAR")) {
-                    eurtoZAR = (EURtoZAR) future.get().getResult();
-                }
-            }
-
-        } finally {
-            executorService.shutdown();
-            if (context != null) {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    SwipeRefreshLayout swipeLayout = context.findViewById(R.id.swipe_containerEuro);
-                    if (swipeLayout != null) {
-                        swipeLayout.setRefreshing(false);
-                    }
-                });
-            }
-        }
-        return null;
+    protected void setCurrencyToZarCurrency(Object object) {
+        eurToZAR = (EURtoZAR) object;
     }
-
 
     @Override
     public void onResult(final Void value) {
@@ -125,8 +47,8 @@ public class EURORestCalls extends BaseRestCalls {
         if (allSyncDone) {
 
             // Calculate spread
-            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bceur.getLprice()),
-                    Double.parseDouble(eurtoZAR.getEurZar()));
+            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcToCurrency.getLprice()),
+                    Double.parseDouble(eurToZAR.getEurZar()));
 
             CheckBox buzzCheckBox = context.findViewById(R.id.buzz);
 
@@ -164,20 +86,20 @@ public class EURORestCalls extends BaseRestCalls {
                 }
 
                 ImageView bcUSDTrendImage = context.findViewById(R.id.BCEURTrendImage);
-                if (bcEurTrendUp) {
+                if (bcCurrencyTrendUp) {
                     bcUSDTrendImage.setImageResource(R.drawable.uparrow);
                 } else {
                     bcUSDTrendImage.setImageResource(R.drawable.downarrow);
                 }
 
                 EditText bceurEditTExt = context.findViewById(R.id.BCEURO);
-                bceurEditTExt.setText(String.format("%.2f", new Double(bceur.getLprice())));
+                bceurEditTExt.setText(String.format("%.2f", new Double(bcToCurrency.getLprice())));
 
                 EditText bczarEditTExt = context.findViewById(R.id.BCZARONEUR);
                 bczarEditTExt.setText(String.format("R%.2f", new Double(bczar.getLastTrade())));
 
                 EditText eurToZarEditTExt = context.findViewById(R.id.EUROtoZAR);
-                eurToZarEditTExt.setText(String.format("R%.2f", new Double(eurtoZAR.getEurZar())));
+                eurToZarEditTExt.setText(String.format("R%.2f", new Double(eurToZAR.getEurZar())));
 
                 EditText spreadEditText = context.findViewById(R.id.spreadeur);
                 spreadEditText.setText("SPREAD:  " + String.format("%.2f", spread));
@@ -196,13 +118,13 @@ public class EURORestCalls extends BaseRestCalls {
                     editor.putFloat("BUYEURO", new Float(buyEUROEdit.getText().toString())).commit();
 
                     EditText actualCostRand = context.findViewById(R.id.actualCostRandEuro);
-                    Double actualCostValue = new Double(getFnbExchange(Double.parseDouble(eurtoZAR.getEurZar())) * (new Double(buyEUROEdit.getText().toString()) * 1.035));
+                    Double actualCostValue = new Double(getFnbExchange(Double.parseDouble(eurToZAR.getEurZar())) * (new Double(buyEUROEdit.getText().toString()) * 1.035));
                     actualCostRand.setText(String.format("R%.2f", actualCostValue));
 
                     EditText bitCoinsBought = context.findViewById(R.id.bitCoinsBoughtEur);
 
                     bitCoinsBought.setText(new Double(new Double(buyEUROEdit.getText().toString())
-                            / new Double(bceur.getLprice()) - 0.0012).toString());
+                            / new Double(bcToCurrency.getLprice()) - 0.0012).toString());
 
                     EditText sellAtCurrentRate = context.findViewById(R.id.sellAtCurrentRateEuro);
                     Double sellCurrentRateValue = new Double(bczar.getLastTrade()) * new Double(bitCoinsBought.getText().toString());

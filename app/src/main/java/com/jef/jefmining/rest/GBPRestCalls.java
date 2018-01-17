@@ -9,115 +9,31 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jef.jefmining.R;
-import com.jef.jefmining.cex.CexHelper;
-import com.jef.jefmining.currency.BCTOCURRENCY;
-import com.jef.jefmining.currency.BCZAR;
-import com.jef.jefmining.currency.CurrencyHelper;
 import com.jef.jefmining.currency.GBPtoZAR;
 import com.jef.jefmining.fragments.FragmentGBP;
-import com.jef.jefmining.luno.LunoHelper;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by ettienne on 2017/12/18.
  */
 
 public class GBPRestCalls extends BaseRestCalls {
-    private BCTOCURRENCY bcGbp;
-    private BCZAR bczar;
     private GBPtoZAR gbpToZAR;
     private boolean allSyncDone = true;
-    private boolean lunoTrendUp;
-    private boolean bcGbpTrendUp;
 
     public GBPRestCalls(Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);
+        currency = "GBP";
+        swipeLayout = context.findViewById(R.id.swipe_containerGbp);
+        currencyClass = GBPtoZAR.class;
     }
-
-    @Override
-    public Void doWork(Object... objects) throws Exception {
-        RestClient<String> restClient = new RestClient<>();
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
-        try {
-
-            Set<Callable<FutureResult>> callables = new HashSet<>();
-
-            callables.add(() -> {
-                return new FutureResult(LunoHelper.isTrendUp(restClient, context), "lunoTrendUp");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CexHelper.isTrendUp(restClient, context, "GBP"), "bcGbpTrendUp");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CexHelper.getBCToCurrency(restClient, context, "GBP"), "bcGbp");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(LunoHelper.getLastLunoTrade(restClient, context), "bczar");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CurrencyHelper.getGbpToZar(restClient, context), "gbpToZAR");
-            });
-
-            List<Future<FutureResult>> futures = executorService.invokeAll(callables);
-
-            for (Future<FutureResult> future : futures) {
-                if (future.get().getName().equals("lunoTrendUp")) {
-                    lunoTrendUp = (Boolean) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bcGbpTrendUp")) {
-                    bcGbpTrendUp = (Boolean) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bcGbp")) {
-                    bcGbp = (BCTOCURRENCY) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bczar")) {
-                    bczar = (BCZAR) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("gbpToZAR")) {
-                    gbpToZAR = (GBPtoZAR) future.get().getResult();
-                }
-            }
-
-        } finally {
-            executorService.shutdown();
-            new Handler(Looper.getMainLooper()).post(() -> {
-                if (context != null) {
-                    SwipeRefreshLayout swipeLayout = context.findViewById(R.id.swipe_containerGdp);
-                    if (swipeLayout != null) {
-                        swipeLayout.setRefreshing(false);
-                    }
-                }
-            });
-        }
-        return null;
-    }
-
 
     @Override
     public void onResult(final Void value) {
@@ -125,7 +41,7 @@ public class GBPRestCalls extends BaseRestCalls {
         if (allSyncDone) {
 
             // Calculate spread
-            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcGbp.getLprice()),
+            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcToCurrency.getLprice()),
                     Double.parseDouble(gbpToZAR.getGbpZar()));
 
             CheckBox buzzCheckBox = context.findViewById(R.id.buzz);
@@ -165,14 +81,14 @@ public class GBPRestCalls extends BaseRestCalls {
                 }
 
                 ImageView bcUSDTrendImage = context.findViewById(R.id.BCGBPTrendImage);
-                if (bcGbpTrendUp) {
+                if (bcCurrencyTrendUp) {
                     bcUSDTrendImage.setImageResource(R.drawable.uparrow);
                 } else {
                     bcUSDTrendImage.setImageResource(R.drawable.downarrow);
                 }
 
                 EditText bcgbpEditTExt = context.findViewById(R.id.BCGBP);
-                bcgbpEditTExt.setText(String.format("%.2f", new Double(bcGbp.getLprice())));
+                bcgbpEditTExt.setText(String.format("%.2f", new Double(bcToCurrency.getLprice())));
 
                 EditText bczarEditTExt = context.findViewById(R.id.BCZARONGBP);
                 bczarEditTExt.setText(String.format("R%.2f", new Double(bczar.getLastTrade())));
@@ -202,7 +118,7 @@ public class GBPRestCalls extends BaseRestCalls {
                     EditText bitCoinsBought = context.findViewById(R.id.bitCoinsBoughtGbp);
 
                     bitCoinsBought.setText(new Double(new Double(buyGBPOEdit.getText().toString())
-                            / new Double(bcGbp.getLprice()) - 0.0012).toString());
+                            / new Double(bcToCurrency.getLprice()) - 0.0012).toString());
 
                     EditText sellAtCurrentRate = context.findViewById(R.id.sellAtCurrentRateGbp);
                     Double sellCurrentRateValue = new Double(bczar.getLastTrade()) * new Double(bitCoinsBought.getText().toString());
@@ -221,6 +137,13 @@ public class GBPRestCalls extends BaseRestCalls {
             }
         }
     }
+
+
+    @Override
+    protected void setCurrencyToZarCurrency(Object object) {
+        gbpToZAR = (GBPtoZAR) object;
+    }
+
 
     @Override
     public void onError() {

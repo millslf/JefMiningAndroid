@@ -9,116 +9,36 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jef.jefmining.R;
-import com.jef.jefmining.cex.CexHelper;
-import com.jef.jefmining.currency.BCTOCURRENCY;
-import com.jef.jefmining.currency.BCZAR;
-import com.jef.jefmining.currency.CurrencyHelper;
 import com.jef.jefmining.currency.RUBtoZAR;
 import com.jef.jefmining.fragments.FragmentRUB;
-import com.jef.jefmining.luno.LunoHelper;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by ettienne on 2017/12/18.
  */
 
 public class RUBRestCalls extends BaseRestCalls {
-    private BCTOCURRENCY bcRub;
-    private BCZAR bczar;
     private RUBtoZAR rubToZAR;
     private boolean allSyncDone = true;
-    private boolean lunoTrendUp;
-    private boolean bcRubTrendUp;
 
     public RUBRestCalls(Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);
+        currency = "RUB";
+        swipeLayout = context.findViewById(R.id.swipe_containerRub);
+        currencyClass = RUBtoZAR.class;
     }
 
     @Override
-    public Void doWork(Object... objects) throws Exception {
-
-        RestClient<String> restClient = new RestClient<>();
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
-        try {
-
-            Set<Callable<FutureResult>> callables = new HashSet<>();
-
-            callables.add(() -> {
-                return new FutureResult(LunoHelper.isTrendUp(restClient, context), "lunoTrendUp");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CexHelper.isTrendUp(restClient, context, "RUB"), "bcRubTrendUp");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CexHelper.getBCToCurrency(restClient, context, "RUB"), "bcRub");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(LunoHelper.getLastLunoTrade(restClient, context), "bczar");
-            });
-
-            callables.add(() -> {
-                return new FutureResult(CurrencyHelper.getRubToZar(restClient, context), "rubToZAR");
-            });
-
-            List<Future<FutureResult>> futures = executorService.invokeAll(callables);
-
-            for (Future<FutureResult> future : futures) {
-                if (future.get().getName().equals("lunoTrendUp")) {
-                    lunoTrendUp = (Boolean) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bcRubTrendUp")) {
-                    bcRubTrendUp = (Boolean) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bcRub")) {
-                    bcRub = (BCTOCURRENCY) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("bczar")) {
-                    bczar = (BCZAR) future.get().getResult();
-                }
-
-                if (future.get().getName().equals("rubToZAR")) {
-                    rubToZAR = (RUBtoZAR) future.get().getResult();
-                }
-            }
-
-        } finally {
-            executorService.shutdown();
-            new Handler(Looper.getMainLooper()).post(() -> {
-                if (context != null) {
-                    SwipeRefreshLayout swipeLayout = context.findViewById(R.id.swipe_containerRub);
-                    if (swipeLayout != null) {
-                        swipeLayout.setRefreshing(false);
-                    }
-                }
-            });
-        }
-        return null;
+    protected void setCurrencyToZarCurrency(Object object) {
+        rubToZAR = (RUBtoZAR) object;
     }
-
 
     @Override
     public void onResult(final Void value) {
@@ -126,7 +46,7 @@ public class RUBRestCalls extends BaseRestCalls {
         if (allSyncDone) {
 
             // Calculate spread
-            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcRub.getLprice()),
+            Double spread = getSpread(Double.parseDouble(bczar.getLastTrade()), Double.parseDouble(bcToCurrency.getLprice()),
                     Double.parseDouble(rubToZAR.getRubZar()));
 
             CheckBox buzzCheckBox = context.findViewById(R.id.buzz);
@@ -165,14 +85,14 @@ public class RUBRestCalls extends BaseRestCalls {
                 }
 
                 ImageView bcUSDTrendImage = context.findViewById(R.id.BCRUBTrendImage);
-                if (bcRubTrendUp) {
+                if (bcCurrencyTrendUp) {
                     bcUSDTrendImage.setImageResource(R.drawable.uparrow);
                 } else {
                     bcUSDTrendImage.setImageResource(R.drawable.downarrow);
                 }
 
                 EditText bcrubEditTExt = context.findViewById(R.id.BCRUB);
-                bcrubEditTExt.setText(String.format("%.2f", new Double(bcRub.getLprice())));
+                bcrubEditTExt.setText(String.format("%.2f", new Double(bcToCurrency.getLprice())));
 
                 EditText bczarEditTExt = context.findViewById(R.id.BCZARONRUB);
                 bczarEditTExt.setText(String.format("R%.2f", new Double(bczar.getLastTrade())));
@@ -202,7 +122,7 @@ public class RUBRestCalls extends BaseRestCalls {
                     EditText bitCoinsBought = context.findViewById(R.id.bitCoinsBoughtRub);
 
                     bitCoinsBought.setText(new Double(new Double(buyRUBOEdit.getText().toString())
-                            / new Double(bcRub.getLprice()) - 0.0012).toString());
+                            / new Double(bcToCurrency.getLprice()) - 0.0012).toString());
 
                     EditText sellAtCurrentRate = context.findViewById(R.id.sellAtCurrentRateRub);
                     Double sellCurrentRateValue = new Double(bczar.getLastTrade()) * new Double(bitCoinsBought.getText().toString());

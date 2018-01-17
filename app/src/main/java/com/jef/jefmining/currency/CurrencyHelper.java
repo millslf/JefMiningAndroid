@@ -26,31 +26,12 @@ public class CurrencyHelper {
         return null;
     }
 
-    public static GBPtoZAR getGbpToZar(RestClient restClient, Context context) throws IOException {
+    public static Object getCurrencyToZar(RestClient restClient, Context context, String currency, Class currencyClass) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ResponseEntity<String> responseEntity = doRest("GBP", restClient, context);
+        ResponseEntity<String> responseEntity = doRest(currency, restClient, context);
 
         if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            return mapper.readValue(responseEntity.getBody(), GBPtoZAR.class);
-        }
-        return null;
-    }
-
-    public static RUBtoZAR getRubToZar(RestClient restClient, Context context) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        ResponseEntity<String> responseEntity = doRest("RUB", restClient, context);
-
-        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            return mapper.readValue(responseEntity.getBody(), RUBtoZAR.class);
-        }
-        return null;
-    }
-
-    public static EURtoZAR getEurToZar(RestClient restClient, Context context) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        ResponseEntity<String> responseEntity = doRest("EUR", restClient, context);
-        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            return mapper.readValue(responseEntity.getBody(), EURtoZAR.class);
+            return mapper.readValue(responseEntity.getBody(), currencyClass);
         }
         return null;
     }
