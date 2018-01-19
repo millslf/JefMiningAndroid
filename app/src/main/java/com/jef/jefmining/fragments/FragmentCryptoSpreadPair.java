@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RequiresApi;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,25 +46,24 @@ public class FragmentCryptoSpreadPair extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_cryto_spread_pair, container, false);
         final Button resyncButton = view.findViewById(R.id.resyncCryptoSpread);
 
-        SwipeRefreshLayout swipeLayout = view.findViewById(R.id.scrollingId);
+        /*SwipeRefreshLayout swipeLayout = view.findViewById(R.id.scrollingId);*/
 
-        swipeLayout.setOnRefreshListener(() -> {
+        /*swipeLayout.setOnRefreshListener(() -> {
             buildPairings();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
             swipeLayout.setRefreshing(false);
-        });
+        });*/
 
         resyncButton.setOnClickListener(v -> {
-            swipeLayout.setRefreshing(true);
             buildPairings();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-            swipeLayout.setRefreshing(false);
+
         });
 
-        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+        /*swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+                android.R.color.holo_red_light);*/
 
         return view;
 
