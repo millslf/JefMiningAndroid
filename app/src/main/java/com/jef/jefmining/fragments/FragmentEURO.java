@@ -36,6 +36,7 @@ public class FragmentEURO extends BaseFragment {
         final double spread = getActivity().getSharedPreferences(null, Context.MODE_PRIVATE).getFloat("SPREADEURO", 10);
         final EditText spreadEditText = view.findViewById(R.id.spreadHighEURO);
         spreadEditText.setText(spread + "");
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_containerEuro);
 
         final Button resyncButton = view.findViewById(R.id.resyncEuro);
         resyncButton.setOnClickListener(v -> {
@@ -46,7 +47,7 @@ public class FragmentEURO extends BaseFragment {
                 euroRestCalls.cancel(true);
             }
 
-            euroRestCalls = new EURORestCalls(getActivity(), true);
+            euroRestCalls = new EURORestCalls(swipeRefreshLayout, getActivity(), true);
             euroRestCalls.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
@@ -76,7 +77,7 @@ public class FragmentEURO extends BaseFragment {
             if (euroRestCalls != null) {
                 euroRestCalls.cancel(true);
             }
-            euroRestCalls = new EURORestCalls(getActivity(), false);
+            euroRestCalls = new EURORestCalls(swipeRefreshLayout, getActivity(), false);
             euroRestCalls.execute();
             //handler.postDelayed(restRunnable, MainActivity.syncTime);
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
@@ -89,7 +90,7 @@ public class FragmentEURO extends BaseFragment {
                 euroRestCalls.cancel(true);
             }
 
-            euroRestCalls = new EURORestCalls(getActivity(), true);
+            euroRestCalls = new EURORestCalls(swipeRefreshLayout, getActivity(), true);
             euroRestCalls.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
 

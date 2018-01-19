@@ -3,6 +3,7 @@ package com.jef.jefmining.rest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,10 +21,10 @@ public class GBPRestCalls extends BaseRestCalls {
     private GBPtoZAR gbpToZAR;
     private boolean allSyncDone = true;
 
-    public GBPRestCalls(Activity context, boolean isVissible) {
+    public GBPRestCalls(SwipeRefreshLayout swipeRefreshLayout, Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);
         currency = "GBP";
-        swipeLayout = context.findViewById(R.id.swipe_containerGbp);
+        swipeLayout = swipeRefreshLayout;
         currencyClass = GBPtoZAR.class;
     }
 

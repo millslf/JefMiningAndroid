@@ -1,46 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0a0909">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_crypto_spread_pair"
+        android:id="@+id/scrollingId"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@id/resyncCryptoSpread"
             android:background="@drawable/rounded_box"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/pairing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="CEX COINAPULT"
-                android:textAllCaps="true"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                android:textStyle="bold|italic" />
 
-            <ListView
-                android:id="@+id/pairList"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/pairingCexCoinApult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="CEX COINAPULT"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textSize="10sp"
+                    android:textStyle="bold|italic" />
+
+                <ListView
+                    android:id="@+id/pairListCexCoinApult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pairingCexExmo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="CEX EXMO"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textSize="10sp"
+                    android:textStyle="bold|italic" />
+
+                <ListView
+                    android:id="@+id/pairListCexExmo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pairingExmoCoinApult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="EXMO COINAPULT"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textSize="10sp"
+                    android:textStyle="bold|italic" />
+
+                <ListView
+                    android:id="@+id/pairListExmoCoinApult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/resyncCryptoSpread"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="RESYNC" />
-
-
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <Button
+        android:id="@+id/resyncCryptoSpread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="RESYNC" />
 
 
 </RelativeLayout>

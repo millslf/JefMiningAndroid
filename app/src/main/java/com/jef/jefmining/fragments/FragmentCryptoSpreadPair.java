@@ -3,20 +3,25 @@ package com.jef.jefmining.fragments;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jef.jefmining.CustomPairAdapter;
 import com.jef.jefmining.Pairing;
 import com.jef.jefmining.R;
 import com.jef.jefmining.cex.CexHelper;
 import com.jef.jefmining.coinapult.CoinApultHelper;
+import com.jef.jefmining.exmo.ExmoHelper;
 
 import org.json.JSONException;
 
@@ -42,7 +47,8 @@ public class FragmentCryptoSpreadPair extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_cryto_spread_pair, container, false);
         final Button resyncButton = view.findViewById(R.id.resyncCryptoSpread);
 
-        SwipeRefreshLayout swipeLayout = view.findViewById(R.id.swipe_crypto_spread_pair);
+        SwipeRefreshLayout swipeLayout = view.findViewById(R.id.scrollingId);
+
         swipeLayout.setOnRefreshListener(() -> {
             buildPairings();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
@@ -71,25 +77,44 @@ public class FragmentCryptoSpreadPair extends BaseFragment {
         try {
             TreeMap<String, Double> cex = CexHelper.getLastCryptoPrice(getActivity());
             TreeMap<String, Double> coinApult = CoinApultHelper.getLastCryptoPrice(getActivity());
-            List<Pairing> cex_coinApult = Pairing.createParing("CEX", cex, "COINAPULT", coinApult);
-            ListView cexCoinApultListView = getActivity().findViewById(R.id.pairList);
+            TreeMap<String, Double> exmo = ExmoHelper.getLastCryptoPrice(getActivity());
 
-            ViewGroup header = (ViewGroup) getLayoutInflater().inflate(R.layout.pair_row_item_header, cexCoinApultListView, false);
-            TextView exchange1 = header.findViewById(R.id.exchange1);
-            exchange1.setText("CEX");
-            TextView exchange2 = header.findViewById(R.id.exchange2);
-            exchange2.setText("COINAPULT");
 
-            if (cexCoinApultListView.getHeaderViewsCount() == 0) {
-                cexCoinApultListView.addHeaderView(header, null, false);
-            }
+            List<Pairing> cexCoinApult = Pairing.createParing("CEX", cex, "COINAPULT", coinApult);
+            List<Pairing> cexExmo = Pairing.createParing("CEX", cex, "EXMO", exmo);
+            List<Pairing> exmoCoinApult = Pairing.createParing("EXMO", exmo, "COINAPULT", coinApult);
 
-            CustomPairAdapter customAdapter = new CustomPairAdapter(cex_coinApult, getContext());
-            cexCoinApultListView.setAdapter(customAdapter);
+            createList(cexCoinApult, getActivity().findViewById(R.id.pairListCexCoinApult), R.id.exchange1, "CEX", R.id.exchange2, "COINAPULT");
+            createList(cexExmo, getActivity().findViewById(R.id.pairListCexExmo), R.id.exchange1, "CEX", R.id.exchange2, "EXMO");
+            createList(exmoCoinApult, getActivity().findViewById(R.id.pairListExmoCoinApult), R.id.exchange1, "EXMO", R.id.exchange2, "COINAPULT");
+
 
         } catch (IOException | JSONException | InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+
+            new Handler(Looper.getMainLooper()).post(() -> {
+                Toast toast = Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_LONG);
+                toast.show();
+            });
+
+            Log.e(CexHelper.class.getName(), e.getMessage());
         }
+    }
+
+
+    private void createList(List<Pairing> pairing, ListView listView, int exchange1Id, String exchange1Value, int exchange2Id, String exchange2Value) {
+        ViewGroup header = (ViewGroup) getLayoutInflater().inflate(R.layout.pair_row_item_header, listView, false);
+        TextView exchange1 = header.findViewById(exchange1Id);
+        exchange1.setText(exchange1Value);
+        TextView exchange2 = header.findViewById(exchange2Id);
+        exchange2.setText(exchange2Value);
+
+        if (listView.getHeaderViewsCount() == 0) {
+            listView.addHeaderView(header, null, false);
+        }
+
+        CustomPairAdapter customAdapter = new CustomPairAdapter(pairing, getContext());
+        listView.setAdapter(customAdapter);
+
     }
 
 }

@@ -2,7 +2,11 @@ package com.jef.jefmining.cex;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jef.jefmining.currency.BCTOCURRENCY;
@@ -110,7 +114,14 @@ public class CexHelper {
                 try {
                     item.get().getResult().forEach(item2 -> treeMap.put(item2.getSymbol2() + "_" + item2.getSymbol1(), Double.parseDouble(item2.getLprice())));
                 } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (context != null) {
+                            Toast toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    });
+
+                    Log.e(CexHelper.class.getName(), e.getMessage());
                 }
             });
             return treeMap;

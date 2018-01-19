@@ -3,6 +3,7 @@ package com.jef.jefmining.rest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,10 +19,10 @@ public class USDRestCalls extends BaseRestCalls {
     private USDtoZAR usdToZAR;
     private boolean allSyncDone = true;
 
-    public USDRestCalls(Activity context, boolean isVissible) {
+    public USDRestCalls(SwipeRefreshLayout swipeRefreshLayout, Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);
         currency = "USD";
-        swipeLayout = context.findViewById(R.id.swipe_containerUsd);
+        swipeLayout = swipeRefreshLayout;
         currencyClass = USDtoZAR.class;
     }
 

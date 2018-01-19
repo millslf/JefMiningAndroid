@@ -38,6 +38,7 @@ public class FragmentRUB extends BaseFragment {
         final EditText spreadEditText = view.findViewById(R.id.spreadHighRUB);
         spreadEditText.setText(spread + "");
 
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_containerRub);
         final Button resyncButton = view.findViewById(R.id.resyncRub);
         resyncButton.setOnClickListener(v -> {
 
@@ -48,7 +49,7 @@ public class FragmentRUB extends BaseFragment {
                 rubRestCalls.cancel(true);
             }
 
-            rubRestCalls = new RUBRestCalls(getActivity(), true);
+            rubRestCalls = new RUBRestCalls(swipeRefreshLayout, getActivity(), true);
             rubRestCalls.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
@@ -80,7 +81,7 @@ public class FragmentRUB extends BaseFragment {
                 rubRestCalls.cancel(true);
             }
 
-            rubRestCalls = new RUBRestCalls(getActivity(), false);
+            rubRestCalls = new RUBRestCalls(swipeRefreshLayout, getActivity(), false);
             rubRestCalls.execute();
 
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
@@ -95,7 +96,7 @@ public class FragmentRUB extends BaseFragment {
                 rubRestCalls.cancel(true);
             }
 
-            rubRestCalls = new RUBRestCalls(getActivity(), true);
+            rubRestCalls = new RUBRestCalls(swipeRefreshLayout, getActivity(), true);
             rubRestCalls.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
 

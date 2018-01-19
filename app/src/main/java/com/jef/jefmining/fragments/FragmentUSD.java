@@ -42,8 +42,10 @@ public class FragmentUSD extends BaseFragment {
         final EditText spreadEditText = view.findViewById(R.id.spreadHighUSD);
         spreadEditText.setText(spread + "");
 
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_containerUsd);
+
         final Button resyncButton = view.findViewById(R.id.resyncUsd);
-        resyncButton.setOnClickListener(v -> {
+        resyncButton.setOnClickListener((View v) -> {
 
             SharedPreferences.Editor editor = getActivity().getSharedPreferences(null, Context.MODE_PRIVATE).edit();
             editor.putFloat("SPREADUSD", Float.parseFloat(spreadEditText.getText().toString())).commit();
@@ -52,7 +54,7 @@ public class FragmentUSD extends BaseFragment {
                 usdRest.cancel(true);
             }
 
-            usdRest = new USDRestCalls(getActivity(), true);
+            usdRest = new USDRestCalls(swipeRefreshLayout, getActivity(), true);
             usdRest.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
@@ -83,7 +85,7 @@ public class FragmentUSD extends BaseFragment {
             if (usdRest != null) {
                 usdRest.cancel(true);
             }
-            usdRest = new USDRestCalls(getActivity(), false);
+            usdRest = new USDRestCalls(swipeRefreshLayout, getActivity(), false);
             usdRest.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
             //handler.postDelayed(restRunnable, MainActivity.syncTime);
@@ -96,7 +98,7 @@ public class FragmentUSD extends BaseFragment {
                 usdRest.cancel(true);
             }
 
-            usdRest = new USDRestCalls(getActivity(), true);
+            usdRest = new USDRestCalls(swipeRefreshLayout, getActivity(), true);
             usdRest.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
 

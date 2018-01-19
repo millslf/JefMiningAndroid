@@ -41,6 +41,7 @@ public class FragmentGBP extends BaseFragment {
         final EditText spreadEditText = view.findViewById(R.id.spreadHighGBP);
         spreadEditText.setText(spread + "");
 
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_containerGbp);
         final Button resyncButton = view.findViewById(R.id.resyncGbp);
         resyncButton.setOnClickListener(v -> {
 
@@ -51,7 +52,7 @@ public class FragmentGBP extends BaseFragment {
                 gdpRestCalls.cancel(true);
             }
 
-            gdpRestCalls = new GBPRestCalls(getActivity(), true);
+            gdpRestCalls = new GBPRestCalls(swipeRefreshLayout, getActivity(), true);
             gdpRestCalls.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
@@ -83,11 +84,11 @@ public class FragmentGBP extends BaseFragment {
                 gdpRestCalls.cancel(true);
             }
 
-            gdpRestCalls = new GBPRestCalls(getActivity(), false);
+            gdpRestCalls = new GBPRestCalls(swipeRefreshLayout, getActivity(), false);
             gdpRestCalls.execute();
 
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-           // handler.postDelayed(restRunnable, MainActivity.syncTime);
+            // handler.postDelayed(restRunnable, MainActivity.syncTime);
         };
         handler.postDelayed(restRunnable, MainActivity.syncTime);
 
@@ -98,7 +99,7 @@ public class FragmentGBP extends BaseFragment {
                 gdpRestCalls.cancel(true);
             }
 
-            gdpRestCalls = new GBPRestCalls(getActivity(), true);
+            gdpRestCalls = new GBPRestCalls(swipeRefreshLayout, getActivity(), true);
             gdpRestCalls.execute();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
 

@@ -3,6 +3,7 @@ package com.jef.jefmining.rest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,10 +19,10 @@ public class RUBRestCalls extends BaseRestCalls {
     private RUBtoZAR rubToZAR;
     private boolean allSyncDone = true;
 
-    public RUBRestCalls(Activity context, boolean isVissible) {
+    public RUBRestCalls(SwipeRefreshLayout swipeRefreshLayout, Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);
         currency = "RUB";
-        swipeLayout = context.findViewById(R.id.swipe_containerRub);
+        swipeLayout = swipeRefreshLayout;
         currencyClass = RUBtoZAR.class;
     }
 
@@ -106,6 +107,5 @@ public class RUBRestCalls extends BaseRestCalls {
     protected EditText getProfitText() {
         return context.findViewById(R.id.profitRub);
     }
-
 
 }

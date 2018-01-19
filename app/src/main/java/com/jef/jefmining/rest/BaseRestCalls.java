@@ -153,11 +153,11 @@ public abstract class BaseRestCalls extends SyncTask<Void> {
         } finally {
             executorService.shutdown();
             new Handler(Looper.getMainLooper()).post(() -> {
-                if (context != null) {
-                    if (swipeLayout != null) {
-                        swipeLayout.setRefreshing(false);
-                    }
+
+                if (swipeLayout != null) {
+                    swipeLayout.setRefreshing(false);
                 }
+
             });
         }
         return null;

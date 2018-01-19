@@ -3,6 +3,7 @@ package com.jef.jefmining.rest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,10 +19,10 @@ public class EURORestCalls extends BaseRestCalls {
 
     private EURtoZAR eurToZAR;
 
-    public EURORestCalls(Activity context, boolean isVissible) {
+    public EURORestCalls(SwipeRefreshLayout swipeRefreshLayout, Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);
         currency = "EUR";
-        swipeLayout = context.findViewById(R.id.swipe_containerEuro);
+        swipeLayout = swipeRefreshLayout;
         currencyClass = EURtoZAR.class;
     }
 

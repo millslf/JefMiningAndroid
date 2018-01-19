@@ -2,9 +2,14 @@ package com.jef.jefmining.coinapult;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jef.jefmining.cex.CexHelper;
 import com.jef.jefmining.rest.RestClient;
 
 import org.json.JSONException;
@@ -52,13 +57,19 @@ public class CoinApultHelper {
                 try {
                     coinApultLastCryptoPriceTreeMap.put(item.get().getName(), item.get().getResult());
                 } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (context != null) {
+                            Toast toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    });
+                    Log.e(CexHelper.class.getName(), e.getMessage());
                 }
             });
 
             TreeMap<String, Double> treeMap = new TreeMap<>();
             coinApultLastCryptoPriceTreeMap.forEach((k, v) -> {
-                treeMap.put(k, v.getBid());
+                treeMap.put(k, v.getAsk());
             });
 
             return treeMap;
