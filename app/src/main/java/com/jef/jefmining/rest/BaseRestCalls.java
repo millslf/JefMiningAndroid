@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.jef.jefmining.JEFApp;
 import com.jef.jefmining.MainActivity;
 import com.jef.jefmining.R;
 import com.jef.jefmining.cex.CexHelper;
@@ -179,7 +180,7 @@ public abstract class BaseRestCalls extends SyncTask<Void> {
                 // Do alert
                 if (spreadAlert <= spread) {
                     if (isBuzzCheckBoxChecked()) {
-                        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        Vibrator v = (Vibrator) JEFApp.get().getSystemService(Context.VIBRATOR_SERVICE);
                         v.vibrate(1000);
                     }
 
@@ -190,11 +191,11 @@ public abstract class BaseRestCalls extends SyncTask<Void> {
                             .setContentText("BUY EURO  : Spread  = " + spread)
                             .setSound(soundUri)
                             .setAutoCancel(true);
-                    Intent intent = new Intent(context, MainActivity.class);
-                    PendingIntent pi = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    Intent intent = new Intent(JEFApp.get(), MainActivity.class);
+                    PendingIntent pi = PendingIntent.getActivity(JEFApp.get(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     mBuilder.setContentIntent(pi);
                     NotificationManager mNotificationManager =
-                            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                            (NotificationManager) JEFApp.get().getSystemService(Context.NOTIFICATION_SERVICE);
                     mNotificationManager.notify(0, mBuilder.build());
                 }
             } else {

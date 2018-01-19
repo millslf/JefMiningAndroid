@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.jef.jefmining.JEFApp;
 import com.jef.jefmining.R;
 import com.jef.jefmining.currency.GBPtoZAR;
 
@@ -46,7 +47,7 @@ public class GBPRestCalls extends BaseRestCalls {
 
     @Override
     protected double getSpreadAlertValue() {
-        return context.getSharedPreferences(null, Context.MODE_PRIVATE).getFloat("SPREADGBP", 10);
+        return JEFApp.get().getSharedPreferences(null, Context.MODE_PRIVATE).getFloat("SPREADGBP", 10);
     }
 
     @Override
