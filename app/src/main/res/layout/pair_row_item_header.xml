@@ -11,8 +11,9 @@
         android:layout_weight="1"
         android:text="Currency"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        android:textSize="8sp" />
+        android:textColor="@android:color/white"
+        android:textSize="8sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/exchange1"
@@ -20,8 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        android:textSize="8sp" />
+        android:textColor="@android:color/white"
+        android:textSize="8sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/exchange2"
@@ -29,8 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        android:textSize="8sp" />
+        android:textColor="@android:color/white"
+        android:textSize="8sp"
+        android:textStyle="bold" />
 
 
     <TextView
@@ -39,16 +42,19 @@
         android:layout_weight="1"
         android:text="Exchange to buy at"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        android:textSize="8sp" />
+        android:textColor="@android:color/white"
+        android:textSize="8sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:text="Spread"
+        android:textAlignment="viewEnd"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        android:textSize="8sp" />
+        android:textColor="@android:color/white"
+        android:textSize="8sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

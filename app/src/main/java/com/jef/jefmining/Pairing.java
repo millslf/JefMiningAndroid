@@ -98,7 +98,7 @@ public class Pairing implements Comparable {
 
     @Override
     public int compareTo(@NonNull Object o) {
-        return new Double(spread - ((Pairing) o).spread).intValue();
+        return new Double(((Pairing) o).spread - spread).intValue();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -112,7 +112,7 @@ public class Pairing implements Comparable {
         });
 
         pairingList.sort((o1, o2) -> {
-            Double val = new Double(o1.getSpread() - o2.getSpread());
+            Double val = new Double(o2.getSpread() - o1.getSpread());
             return val > 0 ? 1 : val < 0 ? -1 : 0;
 
         });
