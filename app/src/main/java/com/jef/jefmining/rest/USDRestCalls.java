@@ -18,7 +18,6 @@ import com.jef.jefmining.currency.USDtoZAR;
 
 public class USDRestCalls extends BaseRestCalls {
     private USDtoZAR usdToZAR;
-    private boolean allSyncDone = true;
 
     public USDRestCalls(SwipeRefreshLayout swipeRefreshLayout, Activity context, boolean isVissible) {
         super("BUSY SYNCING", context, isVissible);

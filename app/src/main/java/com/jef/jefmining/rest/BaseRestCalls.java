@@ -94,7 +94,11 @@ public abstract class BaseRestCalls extends SyncTask<Void> {
     }
 
     protected double getSpread(Double randValBC, Double foreignBCCurrency, Double exchangeRate) {
-        return (randValBC - (foreignBCCurrency * getFnbExchange(exchangeRate)) - getCost(randValBC)) / (randValBC - getCost(randValBC)) * 100 - 3.65;
+        return (randValBC - (foreignBCCurrency * getFnbExchange(exchangeRate)) - getCost(randValBC)) / (randValBC - getCost(randValBC)) * 100 - getCostCexPercentage();
+    }
+
+    protected double getCostCexPercentage() {
+        return 3.65;
     }
 
     @Override
@@ -188,7 +192,7 @@ public abstract class BaseRestCalls extends SyncTask<Void> {
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                             .setSmallIcon(R.drawable.jefmining)
                             .setContentTitle("BitCoin Spread!")
-                            .setContentText("BUY EURO  : Spread  = " + spread)
+                            .setContentText(String.format("BUY %s : Spread  = %s", currency, spread))
                             .setSound(soundUri)
                             .setAutoCancel(true);
                     Intent intent = new Intent(JEFApp.get(), MainActivity.class);
@@ -238,7 +242,8 @@ public abstract class BaseRestCalls extends SyncTask<Void> {
 
                     setSharedPrefBuyCurrenctValue(buyCurrencyText.getText().toString());
                     EditText actualCostRand = getActualCostRandText();
-                    Double actualCostValue = new Double(getFnbExchange(getExchangeRate()) * (new Double(buyCurrencyText.getText().toString()) * 1.035));
+                    Double actualCostValue = new Double(getFnbExchange(getExchangeRate()) * (new Double(buyCurrencyText.getText().toString()) *
+                            (getCostCexPercentage() / 100 + 1)));
                     actualCostRand.setText(String.format("R%.2f", actualCostValue));
 
                     EditText bitCoinsBought = getBCBoughtText();

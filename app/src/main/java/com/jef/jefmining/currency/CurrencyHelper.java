@@ -16,16 +16,6 @@ import java.io.IOException;
 
 public class CurrencyHelper {
 
-    public static USDtoZAR getUsdToZar(RestClient restClient, Context context) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        ResponseEntity<String> responseEntity = doRest("USD", restClient, context);
-
-        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            return mapper.readValue(responseEntity.getBody(), USDtoZAR.class);
-        }
-        return null;
-    }
-
     public static Object getCurrencyToZar(RestClient restClient, Context context, String currency, Class currencyClass) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ResponseEntity<String> responseEntity = doRest(currency, restClient, context);

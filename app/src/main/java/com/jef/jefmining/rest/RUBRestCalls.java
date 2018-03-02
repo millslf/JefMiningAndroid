@@ -59,6 +59,11 @@ public class RUBRestCalls extends BaseRestCalls {
     }
 
     @Override
+    protected double getCostCexPercentage() {
+        return 5.0;
+    }
+
+    @Override
     protected EditText getBCCurrencyText() {
         return context.findViewById(R.id.BCRUB);
     }

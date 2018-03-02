@@ -48,24 +48,11 @@ public class FragmentCryptoSpreadPair extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_cryto_spread_pair, container, false);
         resyncButton = view.findViewById(R.id.resyncCryptoSpread);
 
-        /*SwipeRefreshLayout swipeLayout = view.findViewById(R.id.scrollingId);*/
-
-        /*swipeLayout.setOnRefreshListener(() -> {
-            buildPairings();
-            resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-            swipeLayout.setRefreshing(false);
-        });*/
-
         resyncButton.setOnClickListener(v -> {
             resyncButton.setEnabled(false);
             buildPairings();
             resyncButton.setText("Resync\nLast Sync : " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         });
-
-        /*swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);*/
 
         return view;
 
