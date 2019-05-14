@@ -28,7 +28,9 @@ public class CurrencyHelper {
 
     private static ResponseEntity<String> doRest(String currency, RestClient restClient, Context context) throws IOException {
         return restClient.doGet(context, String.class,
-                String.format("https://free.currencyconverterapi.com/api/v5/convert?q=%s_ZAR&compact=ultra", currency), null, 0);
+                String.format("https://free.currconv.com/api/v7/convert?q=%s_ZAR&compact=ultra&apiKey=906ff6ee6923845680e5", currency), null, 0);
+
+
     }
 
 }
